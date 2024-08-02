@@ -8,8 +8,10 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV
 import os
 
+
 # Set MLflow tracking URI from environment variable
 mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
+
 
 # Define a function to run an experiment
 def run_experiment(n_estimators, max_depth):
@@ -71,7 +73,12 @@ def run_experiment(n_estimators, max_depth):
         # Print MLflow run information
         print(f"Run ID: {mlflow.active_run().info.run_id}")
 
+
 # Run experiments with different hyperparameters
 run_experiment(n_estimators=100, max_depth=None)
+
+
 run_experiment(n_estimators=150, max_depth=10)
+
+
 run_experiment(n_estimators=200, max_depth=20)
