@@ -8,10 +8,8 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV
 import os
 
-
-# Set MLflow tracking URI from environment variable
-mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
-
+# Set the MLflow tracking URI to a local directory
+mlflow.set_tracking_uri("file:///tmp/mlruns")
 
 # Define a function to run an experiment
 def run_experiment(n_estimators, max_depth):
@@ -36,6 +34,9 @@ def run_experiment(n_estimators, max_depth):
         mlflow.log_param("n_estimators", n_estimators)
         mlflow.log_param("max_depth", max_depth)
 
+        # Save the model
+        dump(clf, 'model.joblib')
+
         # Add hyperparameter tuning
         param_grid = {
             'n_estimators': [100, 200],
@@ -50,14 +51,6 @@ def run_experiment(n_estimators, max_depth):
         mlflow.log_param("best_n_estimators", best_params['n_estimators'])
         mlflow.log_param("best_max_depth", best_params['max_depth'])
 
-        # Save the model
-        model_path = 'model.joblib'
-        dump(clf, model_path)
-
-        # Log the model
-        mlflow.log_artifact(model_path)
-        mlflow.sklearn.log_model(clf, "model")
-
         # Calculate accuracy
         y_pred = clf.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
@@ -65,6 +58,9 @@ def run_experiment(n_estimators, max_depth):
 
         # Log metrics
         mlflow.log_metric("accuracy", accuracy)
+
+        # Log model
+        mlflow.sklearn.log_model(clf, "model")
 
         # Print results
         print(f"Accuracy: {accuracy}")
@@ -76,9 +72,5 @@ def run_experiment(n_estimators, max_depth):
 
 # Run experiments with different hyperparameters
 run_experiment(n_estimators=100, max_depth=None)
-
-
 run_experiment(n_estimators=150, max_depth=10)
-
-
 run_experiment(n_estimators=200, max_depth=20)
