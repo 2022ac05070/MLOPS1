@@ -19,6 +19,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install setuptools  # Ensure setuptools is installed
 
     - name: List files in the repository
       run: ls -la
