@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from joblib import dump
 
 # Load the dataset
-df = pd.read_csv('iris.csv')
+df = pd.read_csv('Iris.csv')
 
 # Split the dataset into features and target variable
 X = df.drop(columns=['Species'])
