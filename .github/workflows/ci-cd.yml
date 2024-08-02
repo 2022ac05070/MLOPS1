@@ -32,3 +32,6 @@ jobs:
       run: |
         python train.py
         python predict.py
+    - name: Deploy (Hypothetical Step)
+      run: |
+        echo "Deploying the model..."
