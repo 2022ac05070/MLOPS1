@@ -20,6 +20,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: List files in the repository
+      run: ls -la
+
     - name: Lint with flake8
       run: |
         pip install flake8
