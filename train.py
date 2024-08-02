@@ -23,7 +23,7 @@ clf.fit(X_train, y_train)
 dump(clf, 'model.joblib')
 
 
-#Add hyperparameter tuning
+# Add hyperparameter tuning
 param_grid = {
     'n_estimators': [100, 200],
     'max_depth': [None, 10, 20]
@@ -32,7 +32,7 @@ grid_search = GridSearchCV(estimator=clf, param_grid=param_grid, cv=5)
 grid_search.fit(X_train, y_train)
 clf = grid_search.best_estimator_
 
-#Calculate accuracy
+# Calculate accuracy
 y_pred = clf.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 report = classification_report(y_test, y_pred)
