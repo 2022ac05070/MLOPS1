@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from joblib import dump
+from sklearn.metrics import accuracy_score, classification_report
 
 # Load the dataset
 df = pd.read_csv('Iris.csv')
@@ -19,3 +20,11 @@ clf.fit(X_train, y_train)
 
 # Save the model
 dump(clf, 'model.joblib')
+
+
+#Calculate accuracy
+y_pred = clf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
+print(f"Classification Report:\n{report}")
