@@ -7,8 +7,10 @@ from joblib import dump
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV
 
+
 # Define a function to run an experiment
 def run_experiment(n_estimators, max_depth):
+
     with mlflow.start_run():
 
         # Load the dataset
@@ -63,6 +65,7 @@ def run_experiment(n_estimators, max_depth):
 
         # Print MLflow run information
         print(f"Run ID: {mlflow.active_run().info.run_id}")
+
 
 # Run experiments with different hyperparameters
 run_experiment(n_estimators=100, max_depth=None)
