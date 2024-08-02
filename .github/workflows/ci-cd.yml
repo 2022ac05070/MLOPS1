@@ -13,7 +13,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.x'  # Use the Python version that matches your project
 
     - name: Install dependencies
       run: |
@@ -32,6 +32,13 @@ jobs:
       run: |
         python train.py
         python predict.py
+
+    - name: Run MLflow experiments
+      run: |
+        python experiment_tracking.py
+      env:
+        MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+
     - name: Deploy (Hypothetical Step)
       run: |
         echo "Deploying the model..."
