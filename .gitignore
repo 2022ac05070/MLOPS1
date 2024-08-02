@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
-models/
+*.pyo
+*.pyd
+model.joblib
