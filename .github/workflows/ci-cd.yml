@@ -21,6 +21,10 @@ jobs:
         pip install -r requirements.txt
         pip install setuptools  # Ensure setuptools is installed
 
+    - name: Verify setuptools installation
+      run: |
+        python -c "import pkg_resources; print('pkg_resources is installed')"
+
     - name: List files in the repository
       run: ls -la
 
