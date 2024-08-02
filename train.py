@@ -22,7 +22,6 @@ clf.fit(X_train, y_train)
 # Save the model
 dump(clf, 'model.joblib')
 
-
 # Add hyperparameter tuning
 param_grid = {
     'n_estimators': [100, 200],
