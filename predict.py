@@ -1,21 +1,15 @@
-import joblib
 import pandas as pd
+from joblib import load
 
-def predict():
-    # Load model
-    model = joblib.load('models/iris_model.pkl')
-    
-    # Sample data for prediction
-    data = pd.DataFrame({
-        'SepalLengthCm': [5.1],
-        'SepalWidthCm': [3.5],
-        'PetalLengthCm': [1.4],
-        'PetalWidthCm': [0.2]
-    })
-    
-    # Make prediction
-    prediction = model.predict(data)
-    print(f'Prediction: {prediction}')
+# Load the dataset
+df = pd.read_csv('iris.csv')
 
-if __name__ == '__main__':
-    predict()
+# Load the trained model
+clf = load('model.joblib')
+
+# Make predictions
+X = df.drop(columns=['Species'])
+predictions = clf.predict(X)
+
+# Output predictions
+print(predictions)
