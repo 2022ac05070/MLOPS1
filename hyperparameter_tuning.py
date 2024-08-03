@@ -3,7 +3,6 @@ import mlflow.sklearn
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import load_iris
-from sklearn.metrics import accuracy_score
 
 # Load data
 data = load_iris()
@@ -24,7 +23,6 @@ grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring
 
 # Start MLflow run
 with mlflow.start_run() as run:
-    
     # Fit the model
     grid_search.fit(X, y)
     
@@ -41,4 +39,3 @@ with mlflow.start_run() as run:
 
 print(f"Best Parameters: {best_params}")
 print(f"Best Score: {best_score}")
-
