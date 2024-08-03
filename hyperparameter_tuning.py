@@ -25,16 +25,17 @@ grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring
 with mlflow.start_run() as run:
     # Fit the model
     grid_search.fit(X, y)
+    
     # Get the best parameters
     best_params = grid_search.best_params_
     best_score = grid_search.best_score_
-
+    
     # Log parameters and metrics
     mlflow.log_params(best_params)
     mlflow.log_metric("best_score", best_score)
-
+    
     # Log model
     mlflow.sklearn.log_model(grid_search.best_estimator_, "model")
-
+    
 print(f"Best Parameters: {best_params}")
 print(f"Best Score: {best_score}")
