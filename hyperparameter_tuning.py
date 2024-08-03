@@ -1,63 +1,44 @@
 import mlflow
 import mlflow.sklearn
-import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.datasets import load_iris
+from sklearn.metrics import accuracy_score
 
-def run_hyperparameter_tuning():
-    with mlflow.start_run():
-        # Load the dataset
-        df = pd.read_csv('Iris.csv')
+# Load data
+data = load_iris()
+X, y = data.data, data.target
 
-        # Split the dataset into features and target variable
-        X = df.drop(columns=['Species'])
-        y = df['Species']
+# Define model
+model = RandomForestClassifier()
 
-        # Split the data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Define hyperparameters to tune
+param_grid = {
+    'n_estimators': [50, 100, 150],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5, 10]
+}
 
-        # Define the model
-        clf = RandomForestClassifier()
+# Define GridSearchCV
+grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='accuracy')
 
-        # Define the parameter grid for GridSearchCV
-        param_grid = {
-            'n_estimators': [100, 200],
-            'max_depth': [None, 10, 20]
-        }
+# Start MLflow run
+with mlflow.start_run() as run:
+    
+    # Fit the model
+    grid_search.fit(X, y)
+    
+    # Get the best parameters
+    best_params = grid_search.best_params_
+    best_score = grid_search.best_score_
 
-        # Set up GridSearchCV
-        grid_search = GridSearchCV(estimator=clf, param_grid=param_grid, cv=5)
-        
-        # Fit GridSearchCV
-        grid_search.fit(X_train, y_train)
+    # Log parameters and metrics
+    mlflow.log_params(best_params)
+    mlflow.log_metric("best_score", best_score)
 
-        # Get the best model
-        best_model = grid_search.best_estimator_
-        best_params = grid_search.best_params_
+    # Log model
+    mlflow.sklearn.log_model(grid_search.best_estimator_, "model")
 
-        # Log parameters
-        mlflow.log_params(best_params)
+print(f"Best Parameters: {best_params}")
+print(f"Best Score: {best_score}")
 
-        # Evaluate the model
-        y_pred = best_model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        report = classification_report(y_test, y_pred)
-
-        # Log metrics
-        mlflow.log_metric("accuracy", accuracy)
-
-        # Log model
-        mlflow.sklearn.log_model(best_model, "model")
-
-        # Print results
-        print(f"Best Parameters: {best_params}")
-        print(f"Accuracy: {accuracy}")
-        print(f"Classification Report:\n{report}")
-
-        # Print MLflow run information
-        print(f"Run ID: {mlflow.active_run().info.run_id}")
-
-# Run the hyperparameter tuning process
-if __name__ == "__main__":
-    run_hyperparameter_tuning()
