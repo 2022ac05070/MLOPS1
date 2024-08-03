@@ -6,10 +6,10 @@ from sklearn.ensemble import RandomForestClassifier
 from joblib import dump
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV
-import os
 
 # Set the MLflow tracking URI to a local directory
 mlflow.set_tracking_uri("file:///tmp/mlruns")
+
 
 # Define a function to run an experiment
 def run_experiment(n_estimators, max_depth):
