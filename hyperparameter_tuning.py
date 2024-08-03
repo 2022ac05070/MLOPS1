@@ -24,8 +24,7 @@ grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring
 # Start MLflow run
 with mlflow.start_run() as run:
     # Fit the model
-    grid_search.fit(X, y)
-    
+    grid_search.fit(X, y) 
     # Get the best parameters
     best_params = grid_search.best_params_
     best_score = grid_search.best_score_
